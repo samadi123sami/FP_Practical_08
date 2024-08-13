@@ -1,33 +1,44 @@
 package prac08_22001816
 
 object Q1 {
-  def encrypt(text: String, shift: Int): String = {
+
+  val alphabet = 'A' to 'Z'
+
+  def encrypt(shift: Int, text: String): String = {
     text.map { char =>
       if (char.isLetter) {
-        val offset = if (char.isUpper) 'A' else 'a'
-        ((char - offset + shift) % 26 + offset).toChar
+        val shiftedChar = alphabet((alphabet.indexOf(char.toUpper) + shift) % alphabet.size)
+        if (char.isLower) shiftedChar.toLower else shiftedChar
       } else {
         char
       }
     }
   }
 
-  def decrypt(text: String, shift: Int): String = {
-    encrypt(text, 26 - shift)
+  def decrypt(shift: Int, text: String): String = {
+    text.map { char =>
+      if (char.isLetter) {
+        val shiftedChar = alphabet((alphabet.indexOf(char.toUpper) - shift + alphabet.size) % alphabet.size)
+        if (char.isLower) shiftedChar.toLower else shiftedChar
+      } else {
+        char
+      }
+    }
   }
 
-  def cipher(text: String, shift: Int, func: (String, Int) => String): String = {
-    func(text, shift)
+  def cipher(func: (Int, String) => String, shift: Int, text: String): String = {
+    func(shift, text)
   }
 
   def main(args: Array[String]): Unit = {
-    val text = "Hello, World!"
-    val shift = 1
+    val plaintext = "Hello, World!"
+    val shift = 3
 
-    val encryptedText = cipher(text, shift, encrypt)
+    val encryptedText = cipher(encrypt, shift, plaintext)
     println(s"Encrypted: $encryptedText")
 
-    val decryptedText = cipher(encryptedText, shift, decrypt)
+    val decryptedText = cipher(decrypt, shift, encryptedText)
     println(s"Decrypted: $decryptedText")
   }
 }
+
