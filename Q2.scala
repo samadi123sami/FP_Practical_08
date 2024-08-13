@@ -1,31 +1,19 @@
 package prac08_22001816
 
+import scala.io.StdIn
 object Q2 {
-    def main(args: Array[String]): Unit = {
-      // Check if there is exactly one input argument
-      if (args.length != 1) {
-        println("Please provide exactly one integer as input.")
-        return
-      }
+  def main(args: Array[String]): Unit = {
+    println("Enter the number which you want to categorize: ")
+    val number = StdIn.readLine().toInt
 
-      // Parse the input string to an integer
-      val input = try {
-        args(0).toInt
-      } catch {
-        case _: NumberFormatException =>
-          println("Please provide a valid integer.")
-          return
-      }
-
-      // Define a function that categorizes the input number
-      val categorize: Int => String = {
-        case n if n % 3 == 0 && n % 5 == 0 => "Multiple of Both Three and Five"
-        case n if n % 3 == 0 => "Multiple of Three"
-        case n if n % 5 == 0 => "Multiple of Five"
-        case _ => "Not a Multiple of Three or Five"
-      }
-
-      // Print the result of categorization
-      println(categorize(input))
+    def categorize(n: Int): String = n match {
+      case _ if n % 3 == 0 && n % 5 == 0 => "multiple of three and five"
+      case _ if n % 3 == 0 => "multiple of three"
+      case _ if n % 5 == 0 => "multiple of five"
+      case _ => "not a multiple of three or five"
     }
+
+    val result = categorize(number)
+    println(result)
   }
+}
